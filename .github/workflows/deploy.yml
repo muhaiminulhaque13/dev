@@ -1,0 +1,23 @@
+name: build-and-deploy
+on:
+  push:
+    branches: [main]
+    paths: ["app/**"]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build image
+        run: docker build -t regapp:${{ github.sha }} ./app
+
+      - name: Load image into kind
+        run: kind load docker-image regapp:${{ github.sha }} --name devops
+
+      - name: Deploy
+        run: |
+          kubectl -n demo set image deploy/regapp regapp=regapp:${{ github.sha }}
+          kubectl -n demo rollout status deploy/regapp --timeout=120s
