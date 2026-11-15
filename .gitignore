@@ -1,0 +1,5 @@
+k8s/00-namespace-secret.yaml
+__pycache__/
+*.pyc
+kubectl
+kind
