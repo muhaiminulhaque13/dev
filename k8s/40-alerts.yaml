@@ -1,0 +1,25 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: regapp-alerts
+  namespace: demo
+  labels:
+    release: monitoring
+spec:
+  groups:
+    - name: regapp
+      rules:
+        - alert: RegappDown
+          expr: sum(up{job="regapp"}) < 1
+          for: 1m
+          labels:
+            severity: critical
+          annotations:
+            summary: "regapp koyek ta pod-i down"
+        - alert: RegappHighErrorRate
+          expr: sum(rate(app_http_requests_total{status=~"5.."}[2m])) > 0.1
+          for: 2m
+          labels:
+            severity: warning
+          annotations:
+            summary: "regapp e 5xx error bartese"
