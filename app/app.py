@@ -31,7 +31,7 @@ def init_db():
 init_db()
 
 PAGE = """
-<h2>Registration</h2>
+<h2>Registration v2</h2>
 <form method="post" action="/register">
   <input name="username" placeholder="Username" required><br><br>
   <input name="email" type="email" placeholder="Email" required><br><br>
